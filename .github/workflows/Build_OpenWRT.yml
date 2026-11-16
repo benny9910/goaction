@@ -5,7 +5,7 @@
 # Youtube Channel: https://goo.gl/fvkdwm 
 #=================================================
 
-name: Build_OpenWRT
+name: Build_OpenWRT 
 
 # Add a button to trigger the workflow
 on: 
@@ -58,7 +58,7 @@ jobs:
       run: |
         git clone -b $REPO_BRANCH $REPO_URL openwrt
         cd openwrt
-        git checkout $REPO_VERSION 
+        git checkout $VERSION 
         
     - name: Update & Install feeds
       working-directory: ./openwrt
@@ -79,9 +79,9 @@ jobs:
           git clone https://github.com/ophub/luci-app-amlogic.git package/luci-app-amlogic
         fi
 
-    - name: Configuration Customization - Build $PLATFORM_$VERSION
+    - name: Configuration Customization - Build ${{ inputs.platform }}_${{ inputs.version }}
       env:
-        CONFIG_FILE: $PLATFORM_$VERSION.config 
+        CONFIG_FILE: ${{ inputs.platform }}_${{ inputs.version }}.config 
       run: |
         [ -e $CONFIG_FILE ] && mv $CONFIG_FILE openwrt/.config
         chmod +x ./customize.sh && ./customize.sh
@@ -122,5 +122,5 @@ jobs:
     - name : Upload artifact
       uses: actions/upload-artifact@master
       with:
-        name: OpenWrt_$PLATFORM_$VERSION
+        name: OpenWrt_${{ inputs.platform }}_${{ inputs.version }}
         path: openwrt/output 
