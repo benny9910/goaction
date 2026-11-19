@@ -39,7 +39,8 @@ on:
         options:
           - v23.05.7 
           - v24.10.6 
-          - v25.12.2 
+          - v25.12.1 
+          - v25.12.2
 
 env:
   REPO_URL: https://github.com/immortalwrt/immortalwrt 
