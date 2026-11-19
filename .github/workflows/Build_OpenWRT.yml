@@ -21,6 +21,16 @@ on:
           - x86
           - armsr
           - ramips
+      branch:
+        description: "Select branch"
+        required: false
+        default: "master"
+        type: choice
+        options:
+          - master 
+          - openwrt-23.05 
+          - openwrt-24.10 
+          - openwrt-25.12 
       version:
         description: "Select version"
         required: false
@@ -33,7 +43,7 @@ on:
 
 env:
   REPO_URL: https://github.com/immortalwrt/immortalwrt 
-  REPO_BRANCH: master
+  REPO_BRANCH: ${{ inputs.branch }}  
   VERSION: ${{ inputs.version }}
   PLATFORM: ${{ inputs.platform }}  
   TZ: Asia/Shanghai
@@ -58,7 +68,9 @@ jobs:
       run: |
         git clone -b $REPO_BRANCH $REPO_URL openwrt
         cd openwrt
-        git checkout $VERSION 
+        if [[ $REPO_BRANCH == "master" ]]; then
+          git checkout $VERSION 
+        fi
         
     - name: Update & Install feeds
       working-directory: ./openwrt
