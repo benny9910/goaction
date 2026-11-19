@@ -92,9 +92,12 @@ jobs:
         fi
 
     - name: Configuration Customization - Build ${{ inputs.platform }}_${{ inputs.version }}
-      env:
-        CONFIG_FILE: ${{ inputs.platform }}_${{ inputs.version }}.config 
       run: |
+        if [[ $REPO_BRANCH == "master" ]]; then
+          CONFIG_FILE=${PLATFORM}_v${VERSION:1:5}.config
+        else
+          CONFIG_FILE=${PLATFORM}_v${REPO_BRANCH:8}.config
+        fi
         [ -e $CONFIG_FILE ] && mv $CONFIG_FILE openwrt/.config
         chmod +x ./customize.sh && ./customize.sh
         cd openwrt && make defconfig
