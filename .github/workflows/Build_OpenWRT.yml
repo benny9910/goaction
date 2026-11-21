@@ -51,7 +51,6 @@ on:
           - 5 
 
 env:
-env:
   REPO_URL: https://github.com/immortalwrt/immortalwrt 
   REPO_BRANCH: ${{ inputs.branch }}  
   VERSION: ${{ inputs.version }}
