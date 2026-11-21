@@ -41,12 +41,22 @@ on:
           - v24.10.6 
           - v25.12.1 
           - v25.12.2
+      thread:
+        description: "Select thread"
+        required: false
+        default: "1"
+        type: choice
+        options:
+          - 1 
+          - 5 
 
+env:
 env:
   REPO_URL: https://github.com/immortalwrt/immortalwrt 
   REPO_BRANCH: ${{ inputs.branch }}  
   VERSION: ${{ inputs.version }}
   PLATFORM: ${{ inputs.platform }}  
+  THREAD: ${{ inputs.thread }}
   TZ: Asia/Shanghai
 
 jobs:
@@ -111,8 +121,8 @@ jobs:
     - name: Build firmware
       working-directory: ./openwrt
       run: |
-        echo -e "$(nproc) thread build."
-        make -j$(nproc) V=s
+        echo -e "$THREAD thread build."
+        make -j$THREAD V=s
 
     - name: Generate files 
       working-directory: ./openwrt
