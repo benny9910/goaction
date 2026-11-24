@@ -156,7 +156,7 @@ jobs:
           make -j$THREAD V=s
         else
           echo -e "build package."
-          chmod +x ./customize2.sh && ./customize2.sh
+          chmod +x ../customize2.sh && ../customize2.sh
         fi
 
     - name: Generate files 
