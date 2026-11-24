@@ -48,7 +48,6 @@ on:
         options:
           - v23.05.7 
           - v24.10.6 
-          - v25.12.1 
           - v25.12.2
       thread:
         description: "Select thread"
@@ -58,6 +57,14 @@ on:
         options:
           - 1 
           - 5 
+      object:
+        description: "Select object"
+        required: false
+        default: "all"
+        type: choice
+        options:
+          - all 
+          - package
 
 env:
   OS: ${{ inputs.os }}  
@@ -66,6 +73,7 @@ env:
   VERSION: ${{ inputs.version }}
   PLATFORM: ${{ inputs.platform }}  
   THREAD: ${{ inputs.thread }}
+  OBJECT: ${{ inputs.object }}
   TZ: Asia/Shanghai
 
 jobs:
@@ -143,8 +151,13 @@ jobs:
     - name: Build firmware
       working-directory: ./openwrt
       run: |
-        echo -e "$THREAD thread build."
-        make -j$THREAD V=s
+        if [[ $OBJECT == "all" ]]; then
+          echo -e "$THREAD thread build."
+          make -j$THREAD V=s
+        else
+          echo -e "build package."
+          chmod +x ./customize2.sh && ./customize2.sh
+        fi
 
     - name: Generate files 
       working-directory: ./openwrt
